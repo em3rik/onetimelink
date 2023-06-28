@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onetime Link Generator</title>
+    <style>
+        .copy-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function copyToClipboard(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }
+    </script>
+</head>
+<body>
+    <h1>Onetime Link Generator</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>
+                        {% if 'Your unique link:' in message %}
+                            {{ message }} <button class="copy-button" onclick="copyToClipboard('{{ message[17:] }}')">&#128203;</button>
+                        {% else %}
+                            {{ message }}
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form action="https://nutra.strpaj.ga/onetimelink/" method="post"> <!-- Hardcode the form action -->
+        <label for="message">Enter your message:</label>
+        <input type="text" name="message" id="message">
+        <button type="submit">Generate onetime link</button>
+    </form>
+</body>
+</html>
+
